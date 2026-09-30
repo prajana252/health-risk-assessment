@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vitala | Health Risk Assessment</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <div class="logo">VITALA<span>+</span></div>
+    <nav>
+        <a href="#assessment">Assessment</a>
+        <a href="#about">About</a>
+    </nav>
+</header>
+
+<main>
+
+    <section class="hero">
+        <div class="hero-text">
+            <p class="eyebrow">PERSONAL HEALTH INSIGHT</p>
+
+            <h1>Your health,<br><span>decoded.</span></h1>
+
+            <p class="hero-description">
+                Understand your everyday health indicators through
+                a simple, personalized risk assessment.
+            </p>
+
+            <a href="#assessment" class="hero-button">
+                Start Assessment →
+            </a>
+        </div>
+
+        <div class="hero-card">
+            <div class="pulse">♥</div>
+            <p>YOUR WELLNESS</p>
+            <h2>Starts with<br>awareness.</h2>
+            <div class="mini-line"></div>
+            <span>Simple · Personal · Informative</span>
+        </div>
+    </section>
+
+
+    <section class="assessment" id="assessment">
+
+        <div class="section-heading">
+            <p class="eyebrow">01 — ASSESSMENT</p>
+            <h2>Tell us about yourself.</h2>
+            <p>
+                Enter a few basic health indicators to generate
+                your personalized assessment.
+            </p>
+        </div>
+
+        <div class="form-card">
+
+            <div class="input-group">
+                <label>YOUR NAME</label>
+                <input type="text" id="name" placeholder="e.g. Alex">
+            </div>
+
+            <div class="input-group">
+                <label>AGE</label>
+                <input type="number" id="age" placeholder="e.g. 22">
+            </div>
+
+            <div class="input-group">
+                <label>BMI</label>
+                <input type="number" step="0.1" id="bmi" placeholder="e.g. 22.5">
+            </div>
+
+            <div class="input-group">
+                <label>SYSTOLIC BLOOD PRESSURE</label>
+                <input type="number" id="bp" placeholder="e.g. 120">
+            </div>
+
+            <div class="input-group">
+                <label>BLOOD GLUCOSE (mg/dL)</label>
+                <input type="number" id="glucose" placeholder="e.g. 95">
+            </div>
+
+            <div class="input-group">
+                <label>SMOKING</label>
+                <select id="smoking">
+                    <option value="no">No</option>
+                    <option value="yes">Yes</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>EXERCISE</label>
+                <select id="exercise">
+                    <option value="yes">Regularly</option>
+                    <option value="no">Rarely</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>SLEEP / NIGHT</label>
+                <input type="number" step="0.5" id="sleep" placeholder="e.g. 8">
+            </div>
+
+            <button onclick="assessHealth()">
+                Analyze My Health
+                <span>→</span>
+            </button>
+
+        </div>
+    </section>
+
+
+    <section class="results" id="results">
+
+        <div class="section-heading">
+            <p class="eyebrow">02 — YOUR RESULTS</p>
+            <h2>Your health snapshot.</h2>
+        </div>
+
+        <div class="result-layout">
+
+            <div class="score-card">
+                <p>HEALTH SCORE</p>
+
+                <div class="score-circle">
+                    <span id="score">--</span>
+                    <small>/100</small>
+                </div>
+
+                <div id="risk" class="risk-badge">
+                    Awaiting assessment
+                </div>
+
+                <p class="score-text" id="summary">
+                    Complete the assessment above to see your results.
+                </p>
+            </div>
+
+            <div class="metrics">
+
+                <div class="metric-card">
+                    <span>BODY MASS INDEX</span>
+                    <strong id="bmiResult">--</strong>
+                    <small id="bmiStatus">Waiting</small>
+                </div>
+
+                <div class="metric-card">
+                    <span>BLOOD GLUCOSE</span>
+                    <strong id="glucoseResult">--</strong>
+                    <small id="glucoseStatus">Waiting</small>
+                </div>
+
+                <div class="metric-card">
+                    <span>BLOOD PRESSURE</span>
+                    <strong id="bpResult">--</strong>
+                    <small id="bpStatus">Waiting</small>
+                </div>
+
+                <div class="metric-card">
+                    <span>SLEEP</span>
+                    <strong id="sleepResult">--</strong>
+                    <small id="sleepStatus">Waiting</small>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <section class="insights">
+
+        <div class="section-heading">
+            <p class="eyebrow">03 — INSIGHTS</p>
+            <h2>Small changes matter.</h2>
+        </div>
+
+        <div class="insight-grid">
+
+            <div class="insight">
+                <div>01</div>
+                <h3>Stay active</h3>
+                <p>
+                    Regular physical activity can support cardiovascular
+                    health and overall wellbeing.
+                </p>
+            </div>
+
+            <div class="insight">
+                <div>02</div>
+                <h3>Prioritize sleep</h3>
+                <p>
+                    Consistent, quality sleep is an important part
+                    of maintaining healthy routines.
+                </p>
+            </div>
+
+            <div class="insight">
+                <div>03</div>
+                <h3>Know your numbers</h3>
+                <p>
+                    Tracking basic health indicators can help you
+                    stay aware of changes over time.
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+
+    <section class="disclaimer" id="about">
+        <p>
+            <strong>Important:</strong> Vitala is an educational project
+            and does not provide medical diagnosis or professional medical advice.
+        </p>
+    </section>
+
+</main>
+
+
+<footer>
+    <div class="logo">VITALA<span>+</span></div>
+    <p>Health Risk Assessment · Java Project</p>
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+</html>
