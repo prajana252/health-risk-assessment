@@ -1,0 +1,14 @@
+===== HEALTH RISK ASSESSMENT =====
+
+Enter your age: 45
+Enter your BMI: 27.5
+Enter your systolic blood pressure: 135
+Enter your blood glucose level: 110
+Do you smoke? (yes/no): no
+
+===== RESULT =====
+Risk Level: MODERATE
+Risk Score: 3
+
+Note: This is an educational assessment and
+does not replace professional medical advice.
