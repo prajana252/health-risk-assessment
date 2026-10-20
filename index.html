@@ -12,6 +12,9 @@
   <button class="nav active" data-go="overview"><span>◫</span> Overview</button>
   <button class="nav" data-go="assessment"><span>⌁</span> New assessment</button>
   <button class="nav" data-go="report"><span>◉</span> Visual report</button>
+  <button class="nav" data-go="bmi"><span>⌗</span> BMI lab</button>
+  <button class="nav" data-go="outlook"><span>↗</span> Future outlook</button>
+  <button class="nav" data-go="remedies"><span>✦</span> Action studio</button>
   <div class="side-note"><span class="pulse"></span> <span><b>Privacy-first demo</b><small>Your entries stay in this browser session.</small></span></div>
   <div class="side-bottom">EDUCATIONAL PROTOTYPE<br><span>Not a medical device or diagnosis.</span></div>
 </aside>
@@ -43,6 +46,18 @@
    <label>Physical activity <select id="activity"><option value="">Choose one</option><option value="low">Mostly sitting / little activity</option><option value="some">Some activity, but not consistent</option><option value="active">Regular activity most weeks</option></select></label>
    <div class="field-grid"><label>Sleep per night <span>hours</span><input id="sleep" type="number" min="0" max="24" step=".5" placeholder="e.g. 7"></label><label>Stress lately <span>self-rating</span><select id="stress"><option value="">Choose one</option><option value="low">Low</option><option value="moderate">Moderate</option><option value="high">High</option></select></label></div>
    <label>Tobacco use <select id="smoking"><option value="">Choose one</option><option value="never">Never</option><option value="former">Former</option><option value="current">Current</option></select></label>
+   <div class="eyebrow extra-label">MORE HEALTH INDICATORS</div>
+   <div class="field-grid">
+    <label>Waist circumference <span>cm · optional</span><input id="waist" type="number" min="30" max="250" placeholder="e.g. 78"></label>
+    <label>Resting heart rate <span>bpm · optional</span><input id="heart" type="number" min="25" max="240" placeholder="e.g. 72"></label>
+    <label>Total cholesterol <span>mg/dL · optional</span><input id="cholesterol" type="number" min="50" max="600" placeholder="e.g. 180"></label>
+    <label>Water intake <span>glasses/day · optional</span><input id="water" type="number" min="0" max="30" placeholder="e.g. 6"></label>
+   </div>
+   <div class="field-grid">
+    <label>Fruit & vegetables <span>typical servings/day</span><input id="produce" type="number" min="0" max="30" placeholder="e.g. 4"></label>
+    <label>Alcohol use <span>if applicable</span><select id="alcohol"><option value="">Choose one</option><option value="none">None</option><option value="occasional">Occasional</option><option value="frequent">Frequent</option><option value="prefer-not">Prefer not to say</option></select></label>
+   </div>
+   <label>Energy level lately <select id="energy"><option value="">Choose one</option><option value="good">Mostly good</option><option value="mixed">Up and down</option><option value="low">Often low</option></select></label>
   </div>
   <div class="step-panel" data-step="3"><div class="eyebrow">YOUR INPUT REVIEW</div><h2>Review before reflecting.</h2><p class="sub">Check the summary below. Go back to edit anything. Missing values are clearly labelled.</p><div id="reviewList" class="review-list"></div><div class="hint">This is a transparent educational reflection, not a medical prediction. No AI model or clinical calculator is running in this demo.</div></div>
   <div class="form-actions"><button class="secondary" id="backBtn">← Back</button><span id="formError" role="status"></span><button class="primary" id="nextBtn">Continue →</button></div>
@@ -63,6 +78,60 @@
   <div id="actionList" class="action-list"></div>
   <div class="report-bottom"><div><span class="privacy-dot"></span><b>Transparency & limitations</b><p id="transparency">This report uses only the information you entered.</p></div><button class="secondary" id="printBtn">Print / Save PDF ↗</button></div>
  </div>
+</section>
+
+<section id="bmi" class="page">
+ <div class="eyebrow">BODY METRICS / INTERACTIVE TOOL</div><h2 class="page-heading">BMI lab <em>·</em> calculate & understand</h2>
+ <p class="page-intro">Explore the arithmetic with your own measurements. Adult BMI categories are screening references only; they are not designed to assess children or teens.</p>
+ <div class="tool-layout">
+  <div class="form-card">
+   <div class="field-grid">
+    <label>Height <span>centimetres</span><input id="bmiHeight" type="number" min="80" max="250" placeholder="e.g. 170"></label>
+    <label>Weight <span>kilograms</span><input id="bmiWeight" type="number" min="20" max="350" placeholder="e.g. 65"></label>
+   </div>
+   <label>Age group <select id="bmiAgeGroup"><option value="adult">Adult (18+)</option><option value="teen">Under 18</option></select></label>
+   <button class="primary" id="calcBmiBtn">Calculate BMI ↗</button>
+   <div id="bmiToolError" class="tool-error" role="status"></div>
+  </div>
+  <div class="score-card bmi-result"><div class="eyebrow">YOUR RESULT</div><div class="big-number" id="bmiToolValue">—</div><span id="bmiToolTag" class="tag">Waiting for measurements</span><p id="bmiToolText">Enter height and weight to calculate BMI = weight (kg) ÷ height (m)².</p><div class="bmi-scale"><span>UNDER</span><span>18.5–24.9</span><span>30+</span></div><div class="scale"><i id="bmiToolMarker"></i></div></div>
+ </div>
+ <div class="notice"><span>ⓘ</span><div><b>Use the right context</b><p>For adults, BMI is one screening measure. For people under 18, BMI must be interpreted using age- and sex-specific growth charts by an appropriate professional. Pregnancy, muscle mass and other factors can affect interpretation.</p></div></div>
+</section>
+<section id="outlook" class="page">
+ <div class="eyebrow">SCENARIO EXPLORER / NOT A CLINICAL FORECAST</div><h2 class="page-heading">Future health outlook <em>·</em> explore scenarios</h2>
+ <p class="page-intro">This is a transparent habit-planning simulator, not a prediction of whether you will develop a disease. Adjust possible habit changes to see a relative planning index move—not a medical probability.</p>
+ <div class="outlook-grid">
+  <div class="form-card">
+   <label>Movement plan <span id="moveLabel">3 days/week</span><input id="moveSlider" type="range" min="0" max="7" value="3"></label>
+   <label>Typical sleep <span id="sleepLabel">7 hours/night</span><input id="sleepSlider" type="range" min="4" max="10" step=".5" value="7"></label>
+   <label>Stress support <span id="stressLabel">Some support</span><select id="stressPlan"><option value="0">Not planned yet</option><option value="1" selected>Some support</option><option value="2">Regular recovery routine</option></select></label>
+   <label>Tobacco <select id="tobaccoPlan"><option value="0">No tobacco use</option><option value="1">Current use / not ready to change</option><option value="2">Planning to seek cessation support</option></select></label>
+   <button class="primary" id="updateOutlook">Update scenario ↗</button>
+  </div>
+  <div class="score-card"><div class="eyebrow">HABIT ALIGNMENT INDEX</div><div class="big-number" id="outlookScore">—</div><div class="tag" id="outlookTag">Illustrative only</div><div class="meter outlook-meter"><i id="outlookMeter"></i></div><p id="outlookSummary">Adjust the controls to explore a possible routine.</p><p class="micro">This index is an arbitrary, rule-based educational visualization. It is not a validated risk score, risk percentage, or disease forecast. It does not use your personal medical data to estimate future outcomes.</p></div>
+ </div>
+ <div class="section-head"><div><div class="eyebrow">THREE HORIZONS</div><h2>Think in sustainable steps</h2><p>These are planning prompts, not promised health outcomes.</p></div></div>
+ <div class="tiles three-tiles">
+  <article class="tile"><div class="tile-icon blue">01</div><h3>Next 7 days</h3><p>Pick one small action you can repeat, like a short walk, a regular bedtime, or a brief screen break.</p><span class="tile-foot">Build consistency</span></article>
+  <article class="tile"><div class="tile-icon violet">02</div><h3>Next 30 days</h3><p>Review which habits felt realistic. Adjust the plan around your schedule, access and energy.</p><span class="tile-foot">Review patterns</span></article>
+  <article class="tile"><div class="tile-icon mint">03</div><h3>Next 90 days</h3><p>Discuss persistent symptoms or clinical measurements with a qualified healthcare professional.</p><span class="tile-foot">Use real measurements</span></article>
+ </div>
+</section>
+<section id="remedies" class="page">
+ <div class="eyebrow">PERSONALISED ACTION IDEAS</div><h2 class="page-heading">Action studio <em>·</em> practical, not prescriptive</h2>
+ <p class="page-intro">Choose a focus area to see general, low-risk ideas. These suggestions do not treat disease and should be adapted to your circumstances and any professional advice.</p>
+ <div class="remedy-filter" id="remedyFilters">
+  <button class="filter-chip selected" data-remedy="all">All ideas</button><button class="filter-chip" data-remedy="movement">Movement</button><button class="filter-chip" data-remedy="sleep">Sleep</button><button class="filter-chip" data-remedy="nutrition">Nutrition</button><button class="filter-chip" data-remedy="stress">Stress</button><button class="filter-chip" data-remedy="clinical">Clinical follow-up</button>
+ </div>
+ <div class="remedy-grid" id="remedyGrid">
+  <article class="insight-card" data-kind="movement"><div class="tile-icon blue">↗</div><h3>Make movement easier</h3><p>Start with a manageable walk, stretch or movement break. Increase gradually and choose an activity that suits your ability.</p><div class="why">TRY: 10 minutes after a meal, if appropriate.</div></article>
+  <article class="insight-card" data-kind="sleep"><div class="tile-icon violet">☾</div><h3>Build a sleep cue</h3><p>Keep a consistent wind-down time, reduce late caffeine if it affects you, and make your sleep space comfortable.</p><div class="why">TRY: one repeatable pre-sleep ritual.</div></article>
+  <article class="insight-card" data-kind="nutrition"><div class="tile-icon mint">◈</div><h3>Add, don't just restrict</h3><p>Include a variety of vegetables, fruit, fibre-rich foods and protein sources where available. Avoid extreme diets.</p><div class="why">TRY: add one nourishing food to a meal.</div></article>
+  <article class="insight-card" data-kind="nutrition"><div class="tile-icon amber">◉</div><h3>Hydration check-in</h3><p>Drink regularly and consider thirst, heat, activity and any clinician-provided fluid restrictions.</p><div class="why">TRY: keep water accessible during the day.</div></article>
+  <article class="insight-card" data-kind="stress"><div class="tile-icon violet">✳</div><h3>Make space to reset</h3><p>Try a short breathing pause, journaling, time outdoors or talking with someone you trust. Seek support if distress persists.</p><div class="why">TRY: schedule a five-minute pause.</div></article>
+  <article class="insight-card" data-kind="clinical"><div class="tile-icon blue">＋</div><h3>Bring measurements to a clinician</h3><p>Use properly measured readings and ask what follow-up, if any, is appropriate. Don't change medication based on this demo.</p><div class="why">TRY: keep a dated record of readings.</div></article>
+ </div>
+ <div class="notice"><span>ⓘ</span><div><b>Safety first</b><p>Do not start, stop or change medication based on this website. New, severe or urgent symptoms need prompt medical attention.</p></div></div>
 </section>
 <footer>VITALA.AI · EDUCATIONAL PROTOTYPE <span>Designed for clarity, not diagnosis.</span></footer>
 </main></div><script src="script.js"></script></body></html>
