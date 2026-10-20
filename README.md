@@ -1,62 +1,34 @@
-# 🩺 Health Risk Assessment
+# Vitala AI — Health Risk Assessment (Redesigned)
 
-## 📌 Project Description
+A responsive, dark futuristic, browser-based educational project built with HTML, CSS, and vanilla JavaScript. It can be hosted directly on GitHub Pages.
 
-Health Risk Assessment is a simple Java-based application that evaluates a person's basic health risk using factors such as age, BMI, blood pressure, blood glucose level, and smoking habits.
+## Features
+- Dark navy / electric blue / violet dashboard styling
+- Responsive landing page and assessment form
+- Validation for required fields and reasonable input bounds
+- Rule-based score based on the scoring logic in the original `script.js`
+- Transparent breakdown of all seven scoring factors
+- Measurement summaries and general educational suggestions
+- Downloadable text report and print-friendly results
+- No login, external API, database, or server required; entries are processed in the browser and not stored by the page
 
-The program calculates a risk score and classifies the user into **Low, Moderate, or High Risk**.
+## Run locally
+1. Extract the ZIP.
+2. Open `index.html` in a modern browser. For a better development experience, use VS Code with the Live Server extension.
+3. Fill in the assessment and test the download and print buttons.
 
-## 🎯 Objectives
+## Publish on GitHub Pages
+1. Open your existing repository on GitHub.
+2. Keep a backup of the old files first (download the current repository ZIP).
+3. Upload `index.html`, `style.css`, `script.js`, and this README to the repository root, replacing the old website files.
+4. Commit the changes.
+5. In the repository, open **Settings → Pages** and make sure Pages is configured to publish from the intended branch and root folder.
+6. Wait for the deployment to finish, then hard-refresh the website (Ctrl+F5).
 
-* Collect basic health information from the user.
-* Calculate a health risk score.
-* Categorize the risk level.
-* Provide a simple and easy-to-use console-based assessment.
+## Important note about the score
+The score is a custom educational score based on the rules in the original website JavaScript. It is **not clinically validated** and must not be used to diagnose, predict disease, or guide treatment. Blood pressure, glucose, and BMI interpretation depends on context. The separate Java console file in the uploaded ZIP uses a different scoring model; this redesigned page follows the original website's JavaScript rules rather than claiming the two models are identical.
 
-## 🛠️ Technologies Used
-
-* Java
-* Scanner Class
-* Conditional Statements
-* Basic Arithmetic
-* GitHub
-
-## ⚙️ How It Works
-
-1. The user enters their age.
-2. The user enters their BMI.
-3. Blood pressure and glucose levels are entered.
-4. Smoking status is entered.
-5. The program assigns points based on the entered values.
-6. The total score is calculated.
-7. The user receives a Low, Moderate, or High Risk result.
-
-## ▶️ How to Run
-
-Compile the program:
-
-```bash
-javac HealthRiskAssessment.java
-```
-
-Run the program:
-
-```bash
-java HealthRiskAssessment
-```
-
-## 📊 Risk Levels
-
-| Score | Risk Level |
-| ----: | ---------- |
-|   0–2 | Low        |
-|   3–5 | Moderate   |
-|    6+ | High       |
-
-## ⚠️ Disclaimer
-
-This project is intended for educational purposes only. It is not a medical diagnostic tool and should not replace professional medical advice.
-
-## 👩‍💻 Author
-
-Health Risk Assessment Project
+## Files
+- `index.html` — structure and content
+- `style.css` — visual design and responsive layout
+- `script.js` — validation, scoring, results, download, and print
