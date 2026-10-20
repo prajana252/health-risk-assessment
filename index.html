@@ -1,115 +1,68 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#080b18">
-  <title>Vitala AI — Health Intelligence</title>
-  <meta name="description" content="An educational health indicator assessment dashboard.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vitala AI — Health Intelligence</title><link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
-  <header class="topbar">
-    <a class="brand" href="#" aria-label="Vitala AI home"><span class="brand-mark">✳</span><span>vitala<span class="brand-ai">.ai</span><small>HEALTH INTELLIGENCE</small></span></a>
-    <nav><a href="#assessment">Assessment</a><a href="#how-it-works">How it works</a></nav>
-    <span class="status-pill"><i></i> EDUCATIONAL DEMO</span>
-  </header>
-
-  <main>
-    <section class="hero">
-      <div class="hero-copy">
-        <div class="eyebrow"><span class="eyebrow-line"></span> PERSONAL HEALTH INSIGHTS <span class="eyebrow-tag">V 2.0</span></div>
-        <h1>Your health,<br><span class="gradient-text">seen differently.</span></h1>
-        <p class="hero-sub">Turn everyday health indicators into a clearer picture of your wellness habits. Thoughtful insights, made easier to understand.</p>
-        <div class="hero-actions"><a class="primary-btn" href="#assessment">Start assessment <span>↗</span></a><span class="micro-note"><span class="shield">◇</span> No account required · No data saved</span></div>
-        <div class="hero-stats">
-          <div><strong>07</strong><span>INPUT INDICATORS</span></div><div class="stat-divider"></div>
-          <div><strong>01</strong><span>PERSONAL SNAPSHOT</span></div><div class="stat-divider"></div>
-          <div><strong>100%</strong><span>IN YOUR CONTROL</span></div>
-        </div>
-      </div>
-      <div class="hero-visual" aria-label="Decorative health data visualization">
-        <div class="orbit orbit-outer"></div><div class="orbit orbit-inner"></div>
-        <div class="orbit-dot dot-a"></div><div class="orbit-dot dot-b"></div>
-        <div class="core-card">
-          <div class="core-top"><span class="tiny-label">VITALA / INSIGHT ENGINE</span><span class="live-dot">● LIVE UI</span></div>
-          <div class="pulse-icon"><span>✳</span></div>
-          <div class="core-caption">YOUR WELLNESS</div><h2>Small signals.<br><em>Clearer insight.</em></h2>
-          <div class="signal-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-          <div class="core-foot"><span>PERSONAL SNAPSHOT</span><span>● READY</span></div>
-        </div>
-        <div class="float-chip chip-top"><span class="chip-icon blue">⌁</span><span><b>Health indicators</b><small>One clear overview</small></span></div>
-        <div class="float-chip chip-bottom"><span class="chip-icon purple">✧</span><span><b>Personal insights</b><small>Based on your inputs</small></span></div>
-      </div>
-    </section>
-
-    <section class="trust-strip"><div><span class="strip-icon">⌘</span><span><b>Simple by design</b><small>A guided, easy-to-follow form</small></span></div><div><span class="strip-icon">◈</span><span><b>Transparent scoring</b><small>See what contributes to your score</small></span></div><div><span class="strip-icon">↗</span><span><b>Take it with you</b><small>Print or download your summary</small></span></div></section>
-
-    <section id="assessment" class="assessment-section">
-      <div class="section-intro">
-        <div class="eyebrow"><span class="eyebrow-line"></span> YOUR PERSONAL SNAPSHOT / 01</div>
-        <h2>Let's get to know<br><span class="gradient-text">your health habits.</span></h2>
-        <p>Enter the indicators below to generate an educational snapshot. Use recent measurements where possible.</p>
-        <div class="privacy-note"><span>◈</span><p><b>Privacy-first demo</b><br>Your entries stay in this browser session and are not sent to a server or stored by this page.</p></div>
-      </div>
-      <form id="assessmentForm" class="form-panel" novalidate>
-        <div class="panel-heading"><div><span class="panel-kicker">ASSESSMENT FORM</span><h3>Your indicators</h3></div><span class="step-count">STEP <b>01</b> / 01</span></div>
-        <div class="progress-track"><span></span></div>
-        <div class="form-section-title"><span>01</span> BASIC INFORMATION</div>
-        <div class="field-grid">
-          <label class="field full"><span>YOUR NAME <small>OPTIONAL</small></span><input id="name" name="name" type="text" maxlength="70" placeholder="What should we call you?"><small class="field-help">Only used to label your report.</small></label>
-          <label class="field"><span>AGE <em>*</em></span><div class="input-wrap"><input id="age" name="age" type="number" min="1" max="120" step="1" placeholder="e.g. 24" required><span>years</span></div></label>
-          <label class="field"><span>BMI <em>*</em></span><div class="input-wrap"><input id="bmi" name="bmi" type="number" min="10" max="80" step="0.1" placeholder="e.g. 22.5" required><span>kg/m²</span></div><small class="field-help">BMI = weight (kg) ÷ height² (m). Enter a known BMI.</small></label>
-        </div>
-        <div class="form-section-title"><span>02</span> HEALTH MEASUREMENTS</div>
-        <div class="field-grid">
-          <label class="field"><span>SYSTOLIC BLOOD PRESSURE <em>*</em></span><div class="input-wrap"><input id="bp" name="bp" type="number" min="50" max="300" step="1" placeholder="e.g. 120" required><span>mmHg</span></div><small class="field-help">Use the upper number of a BP reading.</small></label>
-          <label class="field"><span>FASTING BLOOD GLUCOSE <em>*</em></span><div class="input-wrap"><input id="glucose" name="glucose" type="number" min="20" max="700" step="1" placeholder="e.g. 95" required><span>mg/dL</span></div><small class="field-help">Interpretation differs for fasting and non-fasting tests.</small></label>
-        </div>
-        <div class="form-section-title"><span>03</span> LIFESTYLE</div>
-        <div class="field-grid">
-          <fieldset class="field choice-field"><legend>DO YOU SMOKE? <em>*</em></legend><div class="choice-row"><label><input type="radio" name="smoking" value="no" checked><span>No</span></label><label><input type="radio" name="smoking" value="yes"><span>Yes</span></label></div></fieldset>
-          <fieldset class="field choice-field"><legend>REGULAR EXERCISE? <em>*</em></legend><div class="choice-row"><label><input type="radio" name="exercise" value="yes" checked><span>Regularly</span></label><label><input type="radio" name="exercise" value="no"><span>Rarely</span></label></div></fieldset>
-          <label class="field full"><span>AVERAGE SLEEP PER NIGHT <em>*</em></span><div class="input-wrap"><input id="sleep" name="sleep" type="number" min="0.5" max="24" step="0.5" placeholder="e.g. 7.5" required><span>hours</span></div></label>
-        </div>
-        <div id="formError" class="form-error" role="alert" hidden></div>
-        <button class="primary-btn submit-btn" id="assessButton" type="submit"><span class="btn-label">Generate my snapshot</span><span>↗</span></button>
-        <p class="form-footnote">Fields marked * are required. This tool is educational and is not a medical diagnosis.</p>
-      </form>
-    </section>
-
-    <section id="results" class="results-section" hidden aria-live="polite">
-      <div class="results-header"><div><div class="eyebrow"><span class="eyebrow-line"></span> YOUR SNAPSHOT / 02</div><h2 id="resultTitle">Your health snapshot.</h2><p>A transparent summary of the values you entered.</p></div><div class="report-actions"><button class="secondary-btn" id="downloadBtn">↓ Download report</button><button class="secondary-btn" id="printBtn">↗ Print</button></div></div>
-      <div class="results-grid">
-        <article class="score-panel">
-          <div class="panel-heading"><div><span class="panel-kicker">EDUCATIONAL INDICATOR SCORE</span><h3>Overall snapshot</h3></div><span class="score-symbol">✳</span></div>
-          <div class="score-display"><div class="score-ring" id="scoreRing"><div><strong id="score">--</strong><span>OUT OF 100</span></div></div><div class="score-copy"><span class="panel-kicker">INDICATOR SUMMARY</span><h3 id="risk">Awaiting assessment</h3><p id="summary"></p></div></div>
-          <div class="score-scale"><span><i class="scale-low"></i> 80–100 · Higher score</span><span><i class="scale-mid"></i> 60–79 · Mid range</span><span><i class="scale-high"></i> 0–59 · Lower score</span></div>
-          <p class="score-caveat">This is a custom educational score based on the rules in this project. It is not a validated clinical risk score and cannot determine your health status.</p>
-        </article>
-        <article class="metrics-panel">
-          <div class="panel-heading"><div><span class="panel-kicker">MEASUREMENTS</span><h3>Your indicator breakdown</h3></div><span class="small-chip">4 METRICS</span></div>
-          <div class="metric-list">
-            <div class="metric-row"><div class="metric-icon">◉</div><div class="metric-main"><b>BMI</b><small id="bmiStatus">—</small></div><strong id="bmiResult">—</strong></div>
-            <div class="metric-row"><div class="metric-icon">⌁</div><div class="metric-main"><b>Systolic pressure</b><small id="bpStatus">—</small></div><strong id="bpResult">—</strong></div>
-            <div class="metric-row"><div class="metric-icon">◌</div><div class="metric-main"><b>Fasting glucose</b><small id="glucoseStatus">—</small></div><strong id="glucoseResult">—</strong></div>
-            <div class="metric-row"><div class="metric-icon">☾</div><div class="metric-main"><b>Sleep</b><small id="sleepStatus">—</small></div><strong id="sleepResult">—</strong></div>
-          </div>
-        </article>
-      </div>
-      <article class="factors-panel"><div class="panel-heading"><div><span class="panel-kicker">SCORING TRANSPARENCY</span><h3>What shaped your score</h3></div><span class="small-chip">RULE-BASED</span></div><div id="factorList" class="factor-list"></div></article>
-      <article class="recommendations-panel"><div class="recommendation-symbol">✧</div><div><span class="panel-kicker">GENERAL WELLNESS IDEAS</span><h3>Small steps, considered carefully.</h3><p id="recommendations"></p><p class="medical-note">If you have concerns about a measurement or symptom, discuss it with a qualified healthcare professional. A single reading is not enough to diagnose a condition.</p></div></article>
-      <div class="results-bottom"><span>VITALA.AI · EDUCATIONAL HEALTH PROJECT</span><button class="text-btn" id="resetBtn">↺ Start a new assessment</button></div>
-    </section>
-
-    <section id="how-it-works" class="how-section"><div class="eyebrow"><span class="eyebrow-line"></span> BUILT FOR CLARITY</div><h2>More awareness.<br><span class="gradient-text">Less guesswork.</span></h2><div class="how-grid"><article><span>01 / INPUT</span><div class="how-icon">⌘</div><h3>Enter your indicators</h3><p>Share a few basic measurements and lifestyle details.</p></article><article><span>02 / REVIEW</span><div class="how-icon">⌁</div><h3>Understand the score</h3><p>See the rules that affected the educational score—no mystery number.</p></article><article><span>03 / REFLECT</span><div class="how-icon">✧</div><h3>Choose a next step</h3><p>Use the snapshot as a conversation starter, not a diagnosis.</p></article></div></section>
-    <section class="disclaimer"><div class="disclaimer-icon">ⓘ</div><p><b>Important health notice</b><br>Vitala AI is a student educational project. It does not provide medical advice, diagnose conditions, or predict disease. The score is illustrative and not clinically validated. Do not delay seeking professional care because of a result from this page.</p></section>
-  </main>
-  <footer><a class="brand footer-brand" href="#"><span class="brand-mark">✳</span><span>vitala<span class="brand-ai">.ai</span><small>HEALTH INTELLIGENCE</small></span></a><span>Built for learning · Designed for clarity</span><a href="#assessment">Back to assessment ↑</a></footer>
-  <script src="script.js"></script>
-</body>
-</html>
+<div class="shell">
+<aside class="sidebar">
+  <div class="brand"><span class="brandmark">✳</span><span>vitala<span class="muted">.ai</span><small>PERSONAL HEALTH INTELLIGENCE</small></span></div>
+  <div class="side-label">WORKSPACE</div>
+  <button class="nav active" data-go="overview"><span>◫</span> Overview</button>
+  <button class="nav" data-go="assessment"><span>⌁</span> New assessment</button>
+  <button class="nav" data-go="report"><span>◉</span> Visual report</button>
+  <div class="side-note"><span class="pulse"></span> <span><b>Privacy-first demo</b><small>Your entries stay in this browser session.</small></span></div>
+  <div class="side-bottom">EDUCATIONAL PROTOTYPE<br><span>Not a medical device or diagnosis.</span></div>
+</aside>
+<main class="main">
+<header class="topbar"><div><div class="eyebrow">HEALTH INTELLIGENCE / <span id="crumb">OVERVIEW</span></div><h1 id="pageTitle">Your health, in context.</h1></div><div class="top-actions"><span class="status"><i></i> DEMO MODE</span><button class="iconbtn" id="resetBtn" title="Reset assessment">↻</button></div></header>
+<section id="overview" class="page active-page">
+  <div class="hero"><div class="hero-copy"><span class="eyebrow bright">A CLEARER PICTURE OF YOU</span><h2>More than a number.<br><em>A health story.</em></h2><p>Explore lifestyle patterns, review the information you provide, and create a transparent educational snapshot—without pretending to diagnose you.</p><button class="primary" data-go="assessment">Start an assessment <span>→</span></button><div class="hero-foot"><span>✦ Explainable inputs</span><span>✦ Review before results</span><span>✦ Downloadable report</span></div></div><div class="orb-wrap"><div class="orb"><div class="orb-inner">✳</div><span class="orbit-label one">BODY</span><span class="orbit-label two">HABITS</span><span class="orbit-label three">CONTEXT</span></div><div class="orb-caption">YOUR DATA · YOUR CONTEXT · YOUR CHOICES</div></div></div>
+  <div class="section-head"><div><div class="eyebrow">THE FRAMEWORK</div><h2>See the whole picture</h2><p>Each dimension is reviewed separately. Missing data stays visible—not silently treated as normal.</p></div></div>
+  <div class="tiles">
+   <article class="tile"><div class="tile-icon blue">⌁</div><span class="tile-kicker">01 / MEASUREMENTS</span><h3>Body & vitals</h3><p>BMI estimate and optional blood pressure or lab values, with clear units and context.</p><span class="tile-foot">Measured data</span></article>
+   <article class="tile"><div class="tile-icon violet">↗</div><span class="tile-kicker">02 / DAILY LIFE</span><h3>Lifestyle patterns</h3><p>Movement, sleep, tobacco and stress habits that may be worth reflecting on.</p><span class="tile-foot">Changeable factors</span></article>
+   <article class="tile"><div class="tile-icon mint">◎</div><span class="tile-kicker">03 / BACKGROUND</span><h3>Personal context</h3><p>Age, family history and existing conditions help frame—not define—risk.</p><span class="tile-foot">Context matters</span></article>
+   <article class="tile"><div class="tile-icon amber">◈</div><span class="tile-kicker">04 / TRANSPARENCY</span><h3>Explain every result</h3><p>See what was entered, what is missing, and why each observation appears.</p><span class="tile-foot">No mystery score</span></article>
+  </div>
+  <div class="notice"><span>ⓘ</span><div><b>Important distinction</b><p>This prototype generates an educational lifestyle snapshot, not a clinically validated disease-risk probability. It does not replace medical advice. Urgent symptoms require urgent medical care.</p></div></div>
+</section>
+<section id="assessment" class="page">
+ <div class="progress"><div class="progress-top"><span id="stepLabel">STEP 01 OF 04</span><span id="stepName">Your context</span></div><div class="progress-track"><i id="progressBar"></i></div></div>
+ <div class="form-layout"><div class="form-card">
+  <div class="step-panel active" data-step="0"><div class="eyebrow">FIRST, THE BASICS</div><h2>Let's understand your context.</h2><p class="sub">These details help organize the snapshot. Enter only what you're comfortable sharing.</p>
+   <div class="field-grid"><label>Age <span>years</span><input id="age" type="number" min="18" max="120" placeholder="e.g. 24"></label><label>Height <span>cm</span><input id="height" type="number" min="80" max="250" placeholder="e.g. 165"></label><label>Weight <span>kg</span><input id="weight" type="number" min="20" max="350" placeholder="e.g. 60"></label><label>Family history <span>select one</span><select id="family"><option value="">Choose an option</option><option value="yes">Relevant family history</option><option value="no">No known relevant history</option><option value="unknown">Not sure</option></select></label></div>
+   <label>Existing diagnosed conditions <span>optional</span><select id="conditions"><option value="none">None / prefer not to specify</option><option value="diabetes">Diabetes</option><option value="hypertension">High blood pressure</option><option value="cholesterol">High cholesterol</option><option value="other">Other condition</option></select></label>
+  </div>
+  <div class="step-panel" data-step="1"><div class="eyebrow">MEASUREMENTS</div><h2>Only add readings you know.</h2><p class="sub">Use recent measurements where possible. You can leave unknown values blank.</p>
+   <div class="field-grid"><label>Systolic pressure <span>mmHg · top number</span><input id="sys" type="number" min="60" max="260" placeholder="e.g. 120"></label><label>Diastolic pressure <span>mmHg · bottom number</span><input id="dia" type="number" min="30" max="160" placeholder="e.g. 80"></label><label>Fasting glucose <span>mg/dL · optional</span><input id="glucose" type="number" min="20" max="700" placeholder="e.g. 90"></label><label>HbA1c <span>% · optional</span><input id="a1c" type="number" min="2" max="20" step=".1" placeholder="e.g. 5.4"></label></div>
+   <div class="hint">Don't guess blood pressure or lab values. If you don't have a result, leave it blank.</div>
+  </div>
+  <div class="step-panel" data-step="2"><div class="eyebrow">DAILY ROUTINE</div><h2>Small habits add useful context.</h2><p class="sub">Choose the option that best describes a typical week, not your perfect week.</p>
+   <label>Physical activity <select id="activity"><option value="">Choose one</option><option value="low">Mostly sitting / little activity</option><option value="some">Some activity, but not consistent</option><option value="active">Regular activity most weeks</option></select></label>
+   <div class="field-grid"><label>Sleep per night <span>hours</span><input id="sleep" type="number" min="0" max="24" step=".5" placeholder="e.g. 7"></label><label>Stress lately <span>self-rating</span><select id="stress"><option value="">Choose one</option><option value="low">Low</option><option value="moderate">Moderate</option><option value="high">High</option></select></label></div>
+   <label>Tobacco use <select id="smoking"><option value="">Choose one</option><option value="never">Never</option><option value="former">Former</option><option value="current">Current</option></select></label>
+  </div>
+  <div class="step-panel" data-step="3"><div class="eyebrow">YOUR INPUT REVIEW</div><h2>Review before reflecting.</h2><p class="sub">Check the summary below. Go back to edit anything. Missing values are clearly labelled.</p><div id="reviewList" class="review-list"></div><div class="hint">This is a transparent educational reflection, not a medical prediction. No AI model or clinical calculator is running in this demo.</div></div>
+  <div class="form-actions"><button class="secondary" id="backBtn">← Back</button><span id="formError" role="status"></span><button class="primary" id="nextBtn">Continue →</button></div>
+ </div>
+ <aside class="side-summary"><div class="eyebrow">ASSESSMENT MAP</div><h3>Your path</h3><div class="map-step current" data-map="0"><b>01</b><span><strong>Context</strong><small>Basic details</small></span></div><div class="map-step" data-map="1"><b>02</b><span><strong>Measurements</strong><small>Optional clinical data</small></span></div><div class="map-step" data-map="2"><b>03</b><span><strong>Lifestyle</strong><small>Everyday patterns</small></span></div><div class="map-step" data-map="3"><b>04</b><span><strong>Review</strong><small>Confirm your entries</small></span></div><div class="side-tip"><b>Transparency promise</b><p>No hidden inputs. No made-up lab values. Every result is paired with its source and limitation.</p></div></aside></div>
+</section>
+<section id="report" class="page">
+ <div class="report-toolbar"><div><div class="eyebrow">YOUR PERSONAL SNAPSHOT</div><h2>Health reflection report</h2><p class="sub">An organized view of your submitted information and possible next steps.</p></div><div class="toolbar-buttons"><button class="secondary" id="editBtn">✎ Edit inputs</button><button class="primary" id="downloadBtn">↓ Export report</button></div></div>
+ <div id="emptyReport" class="empty-state"><div class="empty-symbol">◈</div><h3>Your report is waiting.</h3><p>Complete the assessment to generate your personalized visual snapshot.</p><button class="primary" data-go="assessment">Start assessment →</button></div>
+ <div id="reportContent" hidden>
+  <div class="report-grid">
+   <article class="score-card"><div class="eyebrow">COMPLETENESS</div><div class="score-line"><div class="ring" id="ring"><div><strong id="completePct">0%</strong><small>DATA</small></div></div><div><h3 id="completeTitle">Snapshot readiness</h3><p id="completeText">Based on fields provided.</p></div></div><div class="meter"><i id="completeMeter"></i></div><div class="micro">Completeness is not a health score.</div></article>
+   <article class="score-card"><div class="eyebrow">BODY MEASUREMENT</div><div class="big-number" id="bmiValue">—</div><div id="bmiLabel" class="tag">BMI not available</div><p id="bmiText">Enter height and weight to see a basic BMI estimate.</p><div class="bmi-scale"><span>LOW</span><span>REFERENCE</span><span>HIGH</span></div><div class="scale"><i id="bmiMarker"></i></div><div class="micro">BMI is a screening measure, not a diagnosis.</div></article>
+  </div>
+  <div class="section-head report-head"><div><div class="eyebrow">INPUTS → OBSERVATIONS</div><h2>What your data says</h2><p>Each card explains the entered value and avoids inferring missing information.</p></div></div>
+  <div id="insightGrid" class="insight-grid"></div>
+  <div class="section-head report-head"><div><div class="eyebrow">REFLECT & ACT</div><h2>Your next-step planner</h2><p>General educational prompts based on the answers you supplied.</p></div></div>
+  <div id="actionList" class="action-list"></div>
+  <div class="report-bottom"><div><span class="privacy-dot"></span><b>Transparency & limitations</b><p id="transparency">This report uses only the information you entered.</p></div><button class="secondary" id="printBtn">Print / Save PDF ↗</button></div>
+ </div>
+</section>
+<footer>VITALA.AI · EDUCATIONAL PROTOTYPE <span>Designed for clarity, not diagnosis.</span></footer>
+</main></div><script src="script.js"></script></body></html>

@@ -1,216 +1,44 @@
-/* Vitala AI — client-side educational assessment. No entries are sent to a server. */
-const form = document.getElementById("assessmentForm");
-const errorBox = document.getElementById("formError");
-const results = document.getElementById("results");
-let latestReport = null;
-
-const $ = (id) => document.getElementById(id);
-const numberValue = (id) => Number($(id).value);
-
-function showError(message) {
-  errorBox.textContent = message;
-  errorBox.hidden = false;
-  errorBox.scrollIntoView({behavior: "smooth", block: "center"});
+const $=id=>document.getElementById(id);
+const pages=[...document.querySelectorAll('.page')];let step=0;let lastReport=null;
+const steps=['Your context','Measurements','Lifestyle','Review'];
+function showPage(id){pages.forEach(p=>p.classList.toggle('active-page',p.id===id));document.querySelectorAll('.nav').forEach(b=>b.classList.toggle('active',b.dataset.go===id));$('pageTitle').textContent=({overview:'Your health, in context.',assessment:'Build your health snapshot.',report:'A clearer view of your inputs.'})[id];$('crumb').textContent=id.toUpperCase();if(id==='report'&&lastReport)renderReport(lastReport);window.scrollTo({top:0,behavior:'smooth'});}
+document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>{const id=b.dataset.go;if(id==='assessment'){step=0;renderStep()}showPage(id)}));
+function renderStep(){document.querySelectorAll('.step-panel').forEach(p=>p.classList.toggle('active',+p.dataset.step===step));document.querySelectorAll('.map-step').forEach(p=>p.classList.toggle('current',+p.dataset.map===step));$('stepLabel').textContent=`STEP 0${step+1} OF 04`;$('stepName').textContent=steps[step];$('progressBar').style.width=((step+1)*25)+'%';$('backBtn').style.visibility=step===0?'hidden':'visible';$('nextBtn').textContent=step===3?'Generate visual report →':'Continue →';$('formError').textContent='';if(step===3)renderReview();}
+function value(id){return $(id).value.trim()}
+function nice(v,map){return map[v]||v||'Not provided'}
+function reviewData(){return [
+['Age',value('age')?value('age')+' years':'Not provided'],['Height',value('height')?value('height')+' cm':'Not provided'],['Weight',value('weight')?value('weight')+' kg':'Not provided'],['Family history',nice(value('family'),{yes:'Relevant history',no:'No known history',unknown:'Not sure'})],['Existing condition',nice(value('conditions'),{none:'None / not specified',diabetes:'Diabetes',hypertension:'High blood pressure',cholesterol:'High cholesterol',other:'Other condition'})],['Blood pressure',value('sys')&&value('dia')?value('sys')+'/'+value('dia')+' mmHg':'Not provided'],['Fasting glucose',value('glucose')?value('glucose')+' mg/dL':'Not provided'],['HbA1c',value('a1c')?value('a1c')+'%':'Not provided'],['Activity',nice(value('activity'),{low:'Mostly sedentary',some:'Some activity',active:'Regular activity'})],['Sleep',value('sleep')?value('sleep')+' hours':'Not provided'],['Stress',nice(value('stress'),{low:'Low',moderate:'Moderate',high:'High'})],['Tobacco',nice(value('smoking'),{never:'Never',former:'Former',current:'Current'})]
+]}
+function renderReview(){$('reviewList').innerHTML=reviewData().map(([k,v])=>`<div class="review-item"><small>${k}</small><b>${esc(v)}</b></div>`).join('')}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+$('backBtn').addEventListener('click',()=>{if(step>0){step--;renderStep()}else showPage('overview')});
+$('nextBtn').addEventListener('click',()=>{if(step===0){if(!value('age')||!value('height')||!value('weight')){$('formError').textContent='Please enter age, height and weight to continue.';return}if(+value('age')<18||+value('age')>120||+value('height')<=0||+value('weight')<=0){$('formError').textContent='Please check age, height and weight values.';return}}
+if(step===1&&((value('sys')&&!value('dia'))||(!value('sys')&&value('dia')))){$('formError').textContent='Enter both blood pressure numbers, or leave both blank.';return}
+if(step<3){step++;renderStep()}else{lastReport=collect();renderReport(lastReport);showPage('report')}});
+function collect(){return {age:+value('age')||null,height:+value('height')||null,weight:+value('weight')||null,family:value('family'),conditions:value('conditions'),sys:+value('sys')||null,dia:+value('dia')||null,glucose:+value('glucose')||null,a1c:+value('a1c')||null,activity:value('activity'),sleep:value('sleep')===''?null:+value('sleep'),stress:value('stress'),smoking:value('smoking'),date:new Date().toLocaleDateString()}}
+function renderReport(d){$('emptyReport').hidden=true;$('reportContent').hidden=false;
+const all=[d.age,d.height,d.weight,d.family,d.activity,d.sleep,d.stress,d.smoking];const filled=all.filter(x=>x!==null&&x!==''&&x!==undefined).length;const pct=Math.round(filled/all.length*100);$('completePct').textContent=pct+'%';$('completeMeter').style.width=pct+'%';$('ring').style.background=`conic-gradient(var(--blue) ${pct*3.6}deg,#26334b 0deg)`;$('completeTitle').textContent=pct>=85?'Good context coverage':pct>=60?'Some context available':'Limited context';$('completeText').textContent=`${filled} of ${all.length} core context fields provided. This measures data completeness only.`;
+let bmi=null;if(d.height&&d.weight)bmi=d.weight/((d.height/100)**2);$('bmiValue').textContent=bmi?bmi.toFixed(1):'—';let bmiLabel='BMI not available',bmiText='Enter height and weight to see a basic BMI estimate.';let marker=50;if(bmi){if(bmi<18.5){bmiLabel='Below adult reference range';bmiText='BMI is below the commonly used adult reference range. A clinician can interpret this alongside other factors.';marker=12}else if(bmi<25){bmiLabel='Within adult reference range';bmiText='BMI is within the commonly used adult reference range. It does not measure body composition or overall health.';marker=37}else if(bmi<30){bmiLabel='Above adult reference range';bmiText='BMI is above the commonly used adult reference range. Consider discussing the full context with a healthcare professional.';marker=67}else{bmiLabel='Higher adult BMI range';bmiText='BMI is in a higher adult range. BMI alone cannot determine health status or diagnose a condition.';marker=88}}$('bmiLabel').textContent=bmiLabel;$('bmiText').textContent=bmiText;$('bmiMarker').style.left=marker+'%';
+const insights=[
+['Blood pressure',d.sys&&d.dia?`${d.sys}/${d.dia} mmHg`:'Not provided',d.sys&&d.dia?bpText(d.sys,d.dia):'No reading entered. Do not estimate it; use a measured reading if available.', 'Uses the two numbers you entered; one reading is not a diagnosis.'],
+['Glucose',d.glucose?d.glucose+' mg/dL':'Not provided',d.glucose?glucoseText(d.glucose):'No fasting glucose result entered. This is not assumed to be normal.', 'Interpretation depends on fasting status and clinical context.'],
+['HbA1c',d.a1c?d.a1c+'%':'Not provided',d.a1c?(d.a1c<5.7?'Below the common prediabetes threshold':d.a1c<6.5?'In the commonly used prediabetes range':'At or above the commonly used diabetes threshold; needs medical confirmation'):'No HbA1c result entered.', 'Laboratory thresholds are not a diagnosis by themselves.'],
+['Movement',nice(d.activity,{low:'Low activity',some:'Some activity',active:'Regular activity'}),d.activity==='low'?'Try a manageable movement break or short walk if appropriate.':d.activity==='some'?'Choose a repeatable activity routine that fits your week.':d.activity==='active'?'Keep a sustainable routine and include recovery.':'Choose an option to reflect on your typical activity.', 'Self-reported habit; no activity tracker is connected.'],
+['Sleep',d.sleep!==null?d.sleep+' hours':'Not provided',d.sleep===null?'Sleep duration was not entered.':d.sleep<7?'Your reported sleep is below the commonly recommended 7+ hours for most adults.':d.sleep<=9?'Your reported duration is within the usual 7–9 hour adult recommendation.':'Your reported duration is above the usual adult range; quality and individual needs also matter.', 'Self-reported duration does not measure sleep quality.'],
+['Tobacco',nice(d.smoking,{never:'Never',former:'Former',current:'Current'}),d.smoking==='current'?'Tobacco use is an important modifiable health risk; support is available if you want to stop.':d.smoking==='former'?'Staying tobacco-free can support long-term health.':d.smoking==='never'?'No current or former tobacco use selected; this is one factor among many.':'Tobacco status was not entered.', 'Based only on your selected response.'],
+['Stress',nice(d.stress,{low:'Low',moderate:'Moderate',high:'High'}),d.stress==='high'?'Consider one realistic stress-support step and reach out to a trusted person or professional if needed.':d.stress==='moderate'?'Notice what helps you recover and build small breaks into your day.':d.stress==='low'?'Continue using healthy ways to manage everyday pressure.':'Stress rating was not entered.', 'A self-rating is not a mental-health diagnosis.'],
+['Family history',nice(d.family,{yes:'Relevant history',no:'No known history',unknown:'Not sure'}),d.family==='yes'?'Share relevant family history with a healthcare professional when discussing personal risk.':d.family==='no'?'No known relevant history selected; this does not remove all risk.':d.family==='unknown'?'If it matters to a clinical assessment, a healthcare professional can help clarify family history.':'Family history was not entered.', 'Context only; it does not determine an outcome.'],
+['Personal context',d.age?d.age+' years':'Age not provided',d.conditions&&d.conditions!=='none'?'You reported an existing condition. Consider using condition-specific professional guidance rather than a generic score.':'Age and existing diagnoses are context—not a complete risk estimate.', 'No validated disease-risk calculator is used here.']
+];
+$('insightGrid').innerHTML=insights.map(([title,val,desc,why])=>`<article class="insight-card"><div class="insight-top"><h3>${esc(title)}</h3><span class="pill">${val==='Not provided'||val==='Age not provided'?'MISSING DATA':'INPUT REVIEW'}</span></div><div class="insight-value">${esc(val)}</div><p>${esc(desc)}</p><div class="why">WHY THIS APPEARS · ${esc(why)}</div></article>`).join('');
+const actions=[];if(!d.sys||!d.dia)actions.push(['Complete missing measurements','If you want a fuller snapshot, add a recent blood-pressure reading taken with a suitable monitor.']);if(!d.glucose&&!d.a1c)actions.push(['Keep lab data optional','Do not guess glucose or HbA1c. Ask a healthcare professional whether testing is appropriate for you.']);if(d.activity==='low')actions.push(['Start small with movement','Consider short, manageable movement breaks and build gradually to a routine suited to your abilities.']);if(d.sleep!==null&&d.sleep<7)actions.push(['Protect sleep time','Try a consistent wind-down and sleep schedule; seek help if sleep problems persist.']);if(d.smoking==='current')actions.push(['Explore tobacco-cessation support','A healthcare professional or local cessation service can help you choose an approach.']);if(d.stress==='high')actions.push(['Make room for recovery','Pick one small stress-support step; seek professional support if stress feels overwhelming.']);actions.push(['Discuss clinical concerns with a professional','Bring actual readings, medications and relevant family history to a qualified healthcare professional.']);actions.push(['Review this snapshot, not a diagnosis','Use the report as a conversation starter. Seek urgent care for urgent or severe symptoms.']);
+$('actionList').innerHTML=actions.map((a,i)=>`<article class="action-item"><div class="action-num">${String(i+1).padStart(2,'0')}</div><div><b>${esc(a[0])}</b><p>${esc(a[1])}</p></div></article>`).join('');
+$('transparency').textContent=`Generated ${d.date}. Uses only entered answers and simple reference explanations. ${12-reviewData().filter(x=>x[1]==='Not provided').length} fields have a value or selection; unknown values remain missing. No data is sent to a server by this static demo.`;
 }
-function clearError() { errorBox.hidden = true; errorBox.textContent = ""; }
-
-function validate(data) {
-  if (!Number.isFinite(data.age) || !Number.isFinite(data.bmi) ||
-      !Number.isFinite(data.bp) || !Number.isFinite(data.glucose) ||
-      !Number.isFinite(data.sleep) || !data.age || !data.bmi ||
-      !data.bp || !data.glucose || !data.sleep) {
-    return "Please complete every required numeric field using valid numbers.";
-  }
-  if (data.age < 1 || data.age > 120) return "Please enter an age between 1 and 120 years.";
-  if (data.bmi < 10 || data.bmi > 80) return "Please enter a BMI between 10 and 80.";
-  if (data.bp < 50 || data.bp > 300) return "Please enter a systolic blood pressure between 50 and 300 mmHg.";
-  if (data.glucose < 20 || data.glucose > 700) return "Please enter a glucose value between 20 and 700 mg/dL.";
-  if (data.sleep < 0.5 || data.sleep > 24) return "Please enter sleep between 0.5 and 24 hours.";
-  return "";
-}
-
-function assess(data) {
-  let score = 100;
-  const factors = [];
-  function addFactor(label, points, detail) {
-    score -= points;
-    factors.push({label, points, detail});
-  }
-  if (data.bmi < 18.5) addFactor("BMI", 10, "Below the typical adult BMI range");
-  else if (data.bmi >= 30) addFactor("BMI", 15, "BMI at or above 30");
-  else if (data.bmi >= 25) addFactor("BMI", 8, "BMI between 25 and 29.9");
-  else factors.push({label:"BMI", points:0, detail:"No score deduction under this project's rule"});
-
-  if (data.bp >= 140) addFactor("Systolic blood pressure", 15, "140 mmHg or higher in this project's rule");
-  else if (data.bp >= 130) addFactor("Systolic blood pressure", 10, "130–139 mmHg in this project's rule");
-  else if (data.bp >= 120) addFactor("Systolic blood pressure", 5, "120–129 mmHg in this project's rule");
-  else factors.push({label:"Systolic blood pressure", points:0, detail:"No score deduction under this project's rule"});
-
-  if (data.glucose >= 126) addFactor("Blood glucose", 15, "126 mg/dL or higher; interpretation depends on test context");
-  else if (data.glucose >= 100) addFactor("Blood glucose", 10, "100–125 mg/dL; interpretation depends on test context");
-  else factors.push({label:"Blood glucose", points:0, detail:"Below 100 mg/dL; fasting status and context matter"});
-
-  if (data.smoking === "yes") addFactor("Smoking", 15, "Smoking selected");
-  else factors.push({label:"Smoking", points:0, detail:"No smoking selected"});
-
-  if (data.exercise === "no") addFactor("Exercise", 10, "Rarely exercises selected");
-  else factors.push({label:"Exercise", points:0, detail:"Regular exercise selected"});
-
-  if (data.sleep < 6) addFactor("Sleep", 10, "Less than 6 hours per night");
-  else if (data.sleep < 7) addFactor("Sleep", 5, "6 to under 7 hours per night");
-  else factors.push({label:"Sleep", points:0, detail:"7 hours or more; individual needs vary"});
-
-  if (data.age >= 60) addFactor("Age", 5, "Age 60 or above in this project's rule");
-  else factors.push({label:"Age", points:0, detail:"No score deduction under this project's rule"});
-
-  score = Math.max(0, Math.min(100, score));
-  const category = score >= 80 ? "Higher score" : score >= 60 ? "Mid-range score" : "Lower score";
-  const summary = score >= 80
-    ? "Your entered values result in a higher score under this project's custom rules. This does not confirm that you are healthy."
-    : score >= 60
-      ? "Some entered values trigger deductions in this project's rules. Review the factor breakdown and seek professional guidance for concerns."
-      : "Several entered values trigger deductions in this project's rules. This is not a diagnosis; consider reviewing concerns with a qualified healthcare professional.";
-  return {score, category, summary, factors};
-}
-
-function bmiStatus(bmi) {
-  if (bmi < 18.5) return "Below typical adult range";
-  if (bmi < 25) return "Typical adult range";
-  if (bmi < 30) return "Above typical adult range";
-  return "BMI 30 or above";
-}
-function bpStatus(bp) {
-  if (bp < 120) return "Below 120 systolic";
-  if (bp < 130) return "Elevated range in this demo";
-  if (bp < 140) return "Higher range in this demo";
-  return "High reading; context matters";
-}
-function glucoseStatus(glucose) {
-  if (glucose < 100) return "Below 100 mg/dL";
-  if (glucose < 126) return "100–125 mg/dL";
-  return "126 mg/dL or higher";
-}
-function sleepStatus(sleep) {
-  if (sleep < 6) return "Under 6 hours";
-  if (sleep < 7) return "6 to under 7 hours";
-  if (sleep <= 9) return "7–9 hours";
-  return "Over 9 hours";
-}
-
-function renderResults(data, assessment) {
-  latestReport = {data, assessment, createdAt: new Date().toLocaleString()};
-  $("resultTitle").textContent = data.name ? `${data.name}'s health snapshot.` : "Your health snapshot.";
-  $("score").textContent = assessment.score;
-  $("risk").textContent = assessment.category;
-  $("summary").textContent = assessment.summary;
-  $("scoreRing").style.background = `conic-gradient(var(--blue) 0deg, var(--purple) ${assessment.score * 3.6}deg, #ffffff0c ${assessment.score * 3.6}deg)`;
-  $("bmiResult").textContent = data.bmi.toFixed(1);
-  $("bmiStatus").textContent = bmiStatus(data.bmi);
-  $("bpResult").textContent = `${data.bp} mmHg`;
-  $("bpStatus").textContent = bpStatus(data.bp);
-  $("glucoseResult").textContent = `${data.glucose} mg/dL`;
-  $("glucoseStatus").textContent = glucoseStatus(data.glucose);
-  $("sleepResult").textContent = `${data.sleep} hrs`;
-  $("sleepStatus").textContent = sleepStatus(data.sleep);
-
-  const factorList = $("factorList");
-  factorList.replaceChildren();
-  assessment.factors.forEach((factor) => {
-    const row = document.createElement("div");
-    row.className = "factor-item";
-    const left = document.createElement("div");
-    const title = document.createElement("div");
-    title.className = "factor-label";
-    title.textContent = factor.label;
-    const detail = document.createElement("small");
-    detail.className = "factor-detail";
-    detail.textContent = factor.detail;
-    left.append(title, detail);
-    const points = document.createElement("strong");
-    points.className = "factor-points";
-    points.textContent = factor.points ? `−${factor.points} points` : "0 points";
-    const bar = document.createElement("div");
-    bar.className = "factor-bar";
-    const fill = document.createElement("span");
-    fill.style.width = `${factor.points / 15 * 100}%`;
-    bar.append(fill);
-    row.append(left, points, bar);
-    factorList.append(row);
-  });
-
-  const recs = [];
-  if (data.smoking === "yes") recs.push("If you smoke and want to quit, a healthcare professional can help you explore evidence-based support.");
-  if (data.exercise === "no") recs.push("Consider asking a professional about a safe, gradual way to add movement that suits your abilities.");
-  if (data.sleep < 7) recs.push("A consistent sleep routine may help; seek advice if sleep problems persist.");
-  if (data.bmi < 18.5 || data.bmi >= 25) recs.push("BMI is a broad screening measure and does not describe body composition or overall health by itself.");
-  if (data.bp >= 130) recs.push("Blood pressure varies and needs proper measurement; discuss repeated high readings with a healthcare professional.");
-  if (data.glucose >= 100) recs.push("Glucose interpretation depends on whether the test was fasting and on your medical context. Ask a clinician about your result.");
-  if (!recs.length) recs.push("Keep building sustainable habits, use properly measured health readings, and discuss any concerns with a qualified professional.");
-  $("recommendations").textContent = recs.join(" ");
-
-  results.hidden = false;
-  results.scrollIntoView({behavior: "smooth", block: "start"});
-}
-
-form.addEventListener("submit", (event) => {
-  event.preventDefault();
-  clearError();
-  const data = {
-    name: $("name").value.trim(),
-    age: numberValue("age"), bmi: numberValue("bmi"),
-    bp: numberValue("bp"), glucose: numberValue("glucose"),
-    smoking: form.elements.smoking.value,
-    exercise: form.elements.exercise.value,
-    sleep: numberValue("sleep")
-  };
-  const error = validate(data);
-  if (error) { showError(error); return; }
-  const assessment = assess(data);
-  renderResults(data, assessment);
-});
-
-function reportText() {
-  if (!latestReport) return "";
-  const {data, assessment, createdAt} = latestReport;
-  return [
-    "VITALA.AI — EDUCATIONAL HEALTH INDICATOR SNAPSHOT",
-    `Generated: ${createdAt}`,
-    `Name: ${data.name || "Not provided"}`,
-    `Age: ${data.age}`,
-    `BMI: ${data.bmi.toFixed(1)} (${bmiStatus(data.bmi)})`,
-    `Systolic blood pressure: ${data.bp} mmHg (${bpStatus(data.bp)})`,
-    `Blood glucose: ${data.glucose} mg/dL (${glucoseStatus(data.glucose)})`,
-    `Smoking: ${data.smoking}`,
-    `Exercise: ${data.exercise === "yes" ? "Regularly" : "Rarely"}`,
-    `Sleep: ${data.sleep} hours (${sleepStatus(data.sleep)})`,
-    "",
-    `Custom educational score: ${assessment.score}/100`,
-    `Score category: ${assessment.category}`,
-    assessment.summary,
-    "",
-    "SCORING FACTORS:",
-    ...assessment.factors.map(f => `- ${f.label}: ${f.points} points deducted. ${f.detail}.`),
-    "",
-    "IMPORTANT: This is a custom educational score, not a clinically validated risk score, diagnosis, or medical advice. Measurement interpretation depends on context. Consult a qualified healthcare professional for concerns."
-  ].join("\n");
-}
-$("downloadBtn").addEventListener("click", () => {
-  if (!latestReport) return;
-  const blob = new Blob([reportText()], {type: "text/plain;charset=utf-8"});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "vitala-health-snapshot.txt";
-  document.body.append(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
-});
-$("printBtn").addEventListener("click", () => window.print());
-$("resetBtn").addEventListener("click", () => {
-  form.reset();
-  clearError();
-  results.hidden = true;
-  latestReport = null;
-  $("assessment").scrollIntoView({behavior: "smooth"});
-});
+function bpText(s,d){if(s>=180||d>=120)return'Very high reading range. If this is a current reading, repeat it as advised and seek urgent medical guidance—especially with symptoms.';if(s>=140||d>=90)return'In a higher blood-pressure range under commonly used adult categories. Repeat measurements and discuss with a healthcare professional.';if(s>=130||d>=80)return'In a range commonly classed as high blood pressure under some adult guidelines. Interpretation depends on repeated readings and clinical context.';if(s>=120&&d<80)return'Systolic reading is in the elevated range under commonly used adult categories. A single reading is not a diagnosis.';return'Entered reading is below common adult high-blood-pressure thresholds. One reading cannot confirm overall status.'}
+function glucoseText(v){if(v<70)return'Below the common fasting reference range; interpret with symptoms and seek medical advice if concerned.';if(v<100)return'Within the common fasting reference range for adults.';if(v<126)return'In the commonly used impaired fasting glucose range; a clinician can interpret and confirm.';return'At or above a common diabetes screening threshold; this requires clinical evaluation and confirmation.'}
+$('editBtn').addEventListener('click',()=>{step=0;renderStep();showPage('assessment')});
+$('downloadBtn').addEventListener('click',()=>{if(!lastReport)return;const d=lastReport;const textReport=['VITALA.AI — EDUCATIONAL HEALTH SNAPSHOT','Generated: '+d.date,'','DATA SUMMARY',...reviewData().map(([k,v])=>k+': '+v),'','IMPORTANT LIMITATION','This is an educational snapshot, not a clinically validated risk prediction or diagnosis. BMI and laboratory thresholds are screening references only. No data is sent to a server by this static demo.','', 'Discuss health concerns with a qualified healthcare professional.'].join('\\n');const blob=new Blob([textReport],{type:'text/plain'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='vitala-health-snapshot.txt';a.click();URL.revokeObjectURL(url)});
+$('printBtn').addEventListener('click',()=>window.print());
+$('resetBtn').addEventListener('click',()=>{if(confirm('Reset all assessment inputs?')){document.querySelectorAll('input').forEach(i=>i.value='');document.querySelectorAll('select').forEach(s=>s.selectedIndex=0);lastReport=null;$('reportContent').hidden=true;$('emptyReport').hidden=false;step=0;renderStep();showPage('overview')}});
+renderStep();
